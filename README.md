@@ -1,16 +1,14 @@
-# fluttertest
+# longsor-flutter
 
-A new Flutter project.
+[Longsor](https://github.com/altilunium/longsor) but flutter.
 
-## Getting Started
 
-This project is a starting point for a Flutter application.
+https://github.com/altilunium/longsor-flutter/assets/70379302/14084bd6-3d62-4bba-bf1d-f82a12d0197f
 
-A few resources to get you started if this is your first Flutter project:
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+### Dependencies 
+* [flutter_map](https://docs.fleaflet.dev) : Show basemap and polygons
+* [flutter_map_location_marker](https://github.com/tlserver/flutter_map_location_marker) : Show current GPS location marker 
+* [Flutter Map Geojson Parser](https://github.com/jozes/flutter_map_geojson/blob/main/lib/src/geojson_parser.dart) : Parse geojson files (package installation doesnt work due to versioning mismatch, install it manually by copy-pasting the class definition) 
+* [flutter_launcher_icons](https://pub.dev/packages/flutter_launcher_icons) : Generate app's icon
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
