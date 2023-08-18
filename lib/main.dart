@@ -403,6 +403,7 @@ class _MyHomePageState extends State<MyHomePage> {
   GeoJsonParser poly_sedang = GeoJsonParser(yellow);
   GeoJsonParser poly_tinggi = GeoJsonParser(orange);
   GeoJsonParser poly_sgttinggi = GeoJsonParser(red);
+  GeoJsonParser poly_his = GeoJsonParser(red);
   final mapController = MapController();
   late Position userpos;
   late FollowOnLocationUpdate _followOnLocationUpdate;
@@ -448,12 +449,14 @@ class _MyHomePageState extends State<MyHomePage> {
     String sedang = await loadAsset('sedang');
     String tinggi = await loadAsset('tinggi');
     String sgttinggi = await loadAsset('sangat_tinggi');
+    String his = await loadAsset('his');
 
     poly_sgtrendah.parseGeoJsonAsString(sgtrendah);
     poly_rendah.parseGeoJsonAsString(rendah);
     poly_sedang.parseGeoJsonAsString(sedang);
     poly_tinggi.parseGeoJsonAsString(tinggi);
     poly_sgttinggi.parseGeoJsonAsString(sgttinggi);
+    poly_his.parseGeoJsonAsString(his);
     userpos = await Geolocator.getCurrentPosition();
   }
 
@@ -506,6 +509,7 @@ class _MyHomePageState extends State<MyHomePage> {
               PolygonLayer(polygons:poly_sedang.polygons,polygonCulling:true),
               PolygonLayer(polygons:poly_tinggi.polygons,polygonCulling:true),
               PolygonLayer(polygons:poly_sgttinggi.polygons,polygonCulling:true),
+              MarkerLayer(markers:poly_his.markers),
               CurrentLocationLayer(),
             ],
             nonRotatedChildren: [
