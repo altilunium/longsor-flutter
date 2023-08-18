@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
@@ -8,6 +9,9 @@ import 'dart:convert';
 import 'package:flutter/services.dart' show rootBundle;
 import 'dart:async';
 import 'package:geolocator/geolocator.dart';
+import 'package:flutter_map_marker_popup/flutter_map_marker_popup.dart';
+import 'dart:io';
+import 'example_popup.dart';
 
 
 
@@ -96,6 +100,54 @@ typedef PolygonCreationCallback = Polygon Function(List<LatLng> points,
 /// To fully customize the  [Marker], [Polyline] and [Polygon] creation one has to write his own
 /// callback functions. As a template the default callback functions can be used.
 ///
+
+
+class MapMarker extends StatefulWidget {
+  String x;
+  
+  MapMarker(this.x);
+  
+  @override
+  _MapMarkerState createState() => _MapMarkerState();
+}
+
+
+class _MapMarkerState extends State<MapMarker> {
+  final key = new GlobalKey();
+  
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: () {
+        final dynamic tooltip = key.currentState;
+        tooltip.ensureTooltipVisible();
+      },
+      child: Tooltip(
+        key: key,
+        message: widget.x,
+        textStyle: TextStyle(color: Colors.black),
+        padding: EdgeInsets.fromLTRB(10, 10, 10, 15),
+        decoration: BoxDecoration(
+          color: Colors.white,
+        ),
+        child: Container(
+          child: Icon(Icons.dangerous, size:25.0, color: Colors.red.withOpacity(1)),
+        ),
+      ),
+    );
+  }
+}
+
+
+
+
+
+
+
+
+
+
 class GeoJsonParser {
   /// list of [Marker] objects created as result of parsing
   final List<Marker> markers = [];
@@ -156,6 +208,8 @@ class GeoJsonParser {
       this.defaultPolygonFillColor,
       this.defaultPolygonBorderStroke,
       this.defaultPolygonIsFilled});
+      
+     
 
   /// parse GeJson in [String] format
   void parseGeoJsonAsString(String g) {
@@ -337,20 +391,38 @@ class GeoJsonParser {
       void Function(Map<String, dynamic>) onMarkerTap) {
     return MouseRegion(
       cursor: SystemMouseCursors.click,
+      //child : Icon(defaultMarkerIcon, color: defaultMarkerColor),
+    
+      
       child: GestureDetector(
         onTap: () {
+          stderr.writeln('print me');
           onMarkerTap(properties);
         },
-        child: Icon(defaultMarkerIcon, color: defaultMarkerColor),
+        child: Icon(Icons.dangerous, size:25.0, color: Colors.black.withOpacity(1)),
       ),
+      
+      
+    
     );
   }
 
   /// default callback function for creating [Marker]
   Marker createDefaultMarker(LatLng point, Map<String, dynamic> properties) {
+    String result = '';
+    properties.forEach((key, value) {
+      result += '$key : $value\n';
+    });
+
+
     return Marker(
+      width: 30.0,
+      height: 30.0,
       point: point,
-      builder: (context) => defaultTappableMarker(properties, markerTapped),
+      //builder: (context) => defaultTappableMarker(properties, markerTapped),
+      //builder: (_) => Icon(Icons.dangerous, size:30.0, color: Colors.black.withOpacity(1)),
+      //rotateAlignment: AnchorAlign.top.rotationAlignment,
+      builder: (context) => MapMarker(result),
     );
   }
 
@@ -383,6 +455,7 @@ class GeoJsonParser {
     }
   }
 }
+
 
 
 Future<String> loadAsset(String n) async {
@@ -498,20 +571,6 @@ class _MyHomePageState extends State<MyHomePage> {
               }
 
             ),
-            children: [
-              TileLayer(
-                urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-                userAgentPackageName: 'com.example.app',
-                
-              ),
-              PolygonLayer(polygons:poly_rendah.polygons,polygonCulling:true),
-              PolygonLayer(polygons:poly_sgtrendah.polygons,polygonCulling:true),
-              PolygonLayer(polygons:poly_sedang.polygons,polygonCulling:true),
-              PolygonLayer(polygons:poly_tinggi.polygons,polygonCulling:true),
-              PolygonLayer(polygons:poly_sgttinggi.polygons,polygonCulling:true),
-              MarkerLayer(markers:poly_his.markers),
-              CurrentLocationLayer(),
-            ],
             nonRotatedChildren: [
               Positioned(
                 right:20,
@@ -544,6 +603,31 @@ class _MyHomePageState extends State<MyHomePage> {
                 
                 ,)
               )
+            ],
+            children: [
+              TileLayer(
+                urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+                userAgentPackageName: 'com.example.app', 
+              ),
+              
+              PolygonLayer(polygons:poly_rendah.polygons,polygonCulling:true),
+              PolygonLayer(polygons:poly_sgtrendah.polygons,polygonCulling:true),
+              PolygonLayer(polygons:poly_sedang.polygons,polygonCulling:true),
+              PolygonLayer(polygons:poly_tinggi.polygons,polygonCulling:true),
+              PolygonLayer(polygons:poly_sgttinggi.polygons,polygonCulling:true),
+              
+             
+              
+              /*
+              PopupMarkerLayer(options: PopupMarkerLayerOptions(markers: poly_his.markers,
+              popupDisplayOptions: PopupDisplayOptions(
+                builder: (BuildContext context, Marker marker) =>
+                  ExamplePopup(marker),
+              ))),
+              */
+
+              CurrentLocationLayer(),
+              MarkerLayer(markers:poly_his.markers),
             ],
           )
         ],
