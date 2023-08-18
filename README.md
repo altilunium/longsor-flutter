@@ -3,7 +3,10 @@
 [Longsor](https://github.com/altilunium/longsor) but flutter.
 
 
-https://github.com/altilunium/longsor-flutter/assets/70379302/14084bd6-3d62-4bba-bf1d-f82a12d0197f
+
+https://github.com/altilunium/longsor-flutter/assets/70379302/a6952b89-c55d-4dc2-afe3-901059cf3acd
+
+
 
 
 ### Dependencies 
